@@ -1,0 +1,29 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+N = int(input())
+text = ''
+for _ in range(N):
+    try:
+        line = input()
+    except EOFError:
+        continue
+    text = text + line
+import re
+comment = re.findall('(<!--.*?-->)',text)
+for i in comment:
+  s = text.replace(i,'')
+  text = s
+para = re.findall('(<.*?>)',text)
+pattern = ['(<\/\w+>)']
+for item in para:
+    for c in pattern:
+        exc = re.findall(c,item)
+        for i in exc:
+            string = item.replace(i,'')
+            item = string
+    if item != '':
+        print(''.join(re.findall('<(\w+)',item))) #tag
+        if re.findall('\s(\S+?)=',item):
+            attr = re.findall('\s(\S+?)=',item)
+            value = re.findall('"(.*?)"',item)
+            for i,j in zip(attr,value):
+                print('->',i,'>',j)
